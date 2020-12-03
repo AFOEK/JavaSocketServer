@@ -185,6 +185,9 @@
         <Property name="text" type="java.lang.String" value="Send"/>
         <Property name="name" type="java.lang.String" value="butt_send" noResource="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="butt_sendMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lbl_stat">
       <Properties>

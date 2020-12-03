@@ -1,5 +1,6 @@
 package javaserver;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.net.Socket;
 import java.io.IOException;
@@ -24,18 +25,19 @@ public class MainFrm extends javax.swing.JFrame {
     }
     public MainFrm() {
         initComponents();
-        lbl_stat.setText("Disconnected");
-        butt_grup = new ButtonGroup();
-        butt_grup.add(rad_server);
+        lbl_stat.setText("Disconnected"); //INIT
+        butt_grup = new ButtonGroup(); //SETUP RadioButtonGroup
+        butt_grup.add(rad_server); //Add RadioButton to RadioButtonGroup
         butt_grup.add(rad_client);
-        rad_server.setActionCommand("Server");
+        rad_server.setActionCommand("Server"); //Set String Action
         rad_client.setActionCommand("Client");
-        txt_msg.setEnabled(false);
+        txt_msg.setEnabled(false); //Fancy UX Flow
         txtmulti_out.setEnabled(false);
         butt_send.setEnabled(false);
         butt_dc.setEnabled(false);
         rad_server.setSelected(true);
         rad_client.setSelected(false);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     @SuppressWarnings("unchecked")
@@ -101,6 +103,11 @@ public class MainFrm extends javax.swing.JFrame {
 
         butt_send.setText("Send");
         butt_send.setName("butt_send"); // NOI18N
+        butt_send.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                butt_sendMouseClicked(evt);
+            }
+        });
 
         lbl_stat.setName("lbl_stat"); // NOI18N
 
@@ -177,24 +184,41 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void butt_connectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_connectMouseClicked
         try{
-            port = Integer.parseInt(txt_port.getText());
-            ip = txt_ip.getText();
-            if(butt_grup.getSelection().getActionCommand() == "Server")
+            port = Integer.parseInt(txt_port.getText()); //Get da port value (PARSED)
+            ip = txt_ip.getText(); //Get IP Value
+            
+            if(butt_grup.getSelection().getActionCommand() == "Server" && txt_port.getText() != "")
             {
+                if(txt_port.getText().equals("")){
+                    port = 8000;
+                }
                 svr = new ServerSocket(port);
                 svr.accept();
-            }else{
+            }else if(butt_grup.getSelection().getActionCommand() == "Client" && txt_ip.getText() == "" && txt_port.getText() == ""){
+                if(txt_port.getText().equals("")){
+                    port = 8000;
+                }
+                if(txt_ip.getText().equals("")){
+                    ip = "localhost";
+                }
                 socket = new Socket(ip,port);
+            }else{
+                lbl_stat.setText("Missing IP/Port value");
+                lbl_stat.setForeground(Color.RED);
             }
+            
             out = new PrintWriter(socket.getOutputStream(),true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             lbl_stat.setText("Connected");
+            lbl_stat.setForeground(Color.GREEN);
             txt_msg.setEnabled(true);
             txtmulti_out.setEnabled(true);
             butt_send.setEnabled(true);
             butt_dc.setEnabled(true);
+            butt_connect.setEnabled(false);
         }catch(IOException e){
             lbl_stat.setText("Error to connect");
+            lbl_stat.setForeground(Color.RED);
         }
     }//GEN-LAST:event_butt_connectMouseClicked
 
@@ -202,11 +226,23 @@ public class MainFrm extends javax.swing.JFrame {
         try{
             in.close();
             out.close();
+            txt_msg.setText("");
+            txtmulti_out.setText("");
+            txt_msg.setEnabled(false);
+            txtmulti_out.setEnabled(false);
+            butt_send.setEnabled(false);
+            butt_dc.setEnabled(false);
+            butt_connect.setEnabled(true);
             lbl_stat.setText("Disconnected");
+            lbl_stat.setForeground(Color.RED);
         }catch(IOException e){
             lbl_stat.setText("Error to disconnect");
         }
     }//GEN-LAST:event_butt_dcMouseClicked
+
+    private void butt_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_sendMouseClicked
+       
+    }//GEN-LAST:event_butt_sendMouseClicked
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
