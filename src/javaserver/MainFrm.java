@@ -22,7 +22,7 @@ public class MainFrm extends javax.swing.JFrame {
     ButtonGroup butt_grup;
     private static StringBuffer toSend;
     private static StringBuffer toAppend;
-    private String msg;
+    private String msg, s, END_CHAT_SESSION;
     
     public void print(){
         System.out.println("TEST_ONLY_DELETE_THIS_LINE");
@@ -44,6 +44,7 @@ public class MainFrm extends javax.swing.JFrame {
         rad_client.setSelected(false);
         toSend = new StringBuffer("");
         toAppend = new StringBuffer("");
+        END_CHAT_SESSION = String.valueOf(0);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -200,6 +201,19 @@ public class MainFrm extends javax.swing.JFrame {
                 }
                 svr = new ServerSocket(port);
                 svr.accept();
+                if(in.ready()){
+                    try{
+                        s = in.readLine();
+                        if(s.isBlank()){
+                            if(s.equals(END_CHAT_SESSION)){
+                                butt_dcMouseClicked(evt);
+                            }
+                        }
+                    }catch(IOException ex){
+                        lbl_stat.setText("Can't retrive data w/ error" + ex);
+                        lbl_stat.setForeground(Color.RED);
+                    }
+                }
             }else if(butt_grup.getSelection().getActionCommand() == "Client"){ //Check if RadioButton is selected Client
                 if(txt_port.getText().isBlank()){
                     port = 8000;
@@ -255,9 +269,10 @@ public class MainFrm extends javax.swing.JFrame {
        try{
            if(butt_grup.getSelection().getActionCommand() == "Client" && txt_msg.getText() != ""){
                msg = txt_msg.getText();
-               synchronized(toSend){
-                   toSend.append(msg + "\n");
-               }
+               out.print(msg);
+               out.flush();
+               txt_msg.setText("");
+               msg = "";
            }else{
                JOptionPane.showMessageDialog(this, "Message empty", "Error", JOptionPane.ERROR_MESSAGE);
            }
