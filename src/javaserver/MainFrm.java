@@ -20,6 +20,8 @@ public class MainFrm extends javax.swing.JFrame {
     private BufferedReader in;
     ButtonGroup butt_grup;
     private String msg;
+    private StringBuffer toSend;
+    private StringBuffer toAppend;
     
     public void print(){
         System.out.println("TEST_ONLY_DELETE_THIS_LINE");
@@ -39,6 +41,8 @@ public class MainFrm extends javax.swing.JFrame {
         butt_dc.setEnabled(false);
         rad_server.setSelected(true);
         rad_client.setSelected(false);
+        txt_msg.setText("");
+        txtmulti_out.setText("");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -190,35 +194,35 @@ public class MainFrm extends javax.swing.JFrame {
             ip = txt_ip.getText(); //Get IP Value
             
             if(butt_grup.getSelection().getActionCommand() == "Server"){ //Check if RadioButton is selected Server
-                if(txt_port.getText().isEmpty()){ //check if port text box is empty
+                if(txt_port.getText().isBlank()){ //check if port text box is empty
                     port = 8000; //set port to default 8000
                 }
                 svr = new ServerSocket(port);
                 svr.accept();
             }else if(butt_grup.getSelection().getActionCommand() == "Client"){ //Check if RadioButton is selected Client
-                if(txt_port.getText().isEmpty()){
+                if(txt_port.getText().isBlank()){
                     port = 8000;
                 }
-                if(txt_ip.getText().isEmpty()){ //check if IP is empty
+                if(txt_ip.getText().isBlank()){ //check if IP is empty
                     ip = "localhost"; //set to localhost
                 }
                 socket = new Socket(ip,port);
             }else{
-                lbl_stat.setText("Wrong IP/Port Value");
-                lbl_stat.setForeground(Color.RED);
+                lbl_stat.setText("Wrong IP/Port Value"); //Fancy error message
+                lbl_stat.setForeground(Color.RED); //Fancy coloring text
             }
             
-            out = new PrintWriter(socket.getOutputStream(),true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(),true); //INIT_TOOLS
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream())); //INIT_TOOLS
             lbl_stat.setText("Connected");
             lbl_stat.setForeground(Color.GREEN);
-            txt_msg.setEnabled(true);
+            txt_msg.setEnabled(true); //Fancy UX flow
             txtmulti_out.setEnabled(true);
             butt_send.setEnabled(true);
             butt_dc.setEnabled(true);
             butt_connect.setEnabled(false);
         }catch(IOException e){
-            lbl_stat.setText("Error to connect w/ error" + e.toString());
+            lbl_stat.setText("Error to connect w/ error" + e.toString()); //Error message
             lbl_stat.setForeground(Color.RED);
         }
     }//GEN-LAST:event_butt_connectMouseClicked
@@ -243,7 +247,11 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void butt_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_sendMouseClicked
        try{
-           
+           if(butt_grup.getSelection().getActionCommand() == "Server"){
+               if(txt_msg.getText().isBlank()){
+                   
+               }
+           }
        }catch(Exception e){
            lbl_stat.setText("Error to send data w/ error" + e.toString());
        }
