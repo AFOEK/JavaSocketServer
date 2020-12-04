@@ -19,10 +19,12 @@ public class MainFrm extends javax.swing.JFrame {
     private PrintWriter out;
     private BufferedReader in;
     ButtonGroup butt_grup;
+    private String msg;
     
     public void print(){
         System.out.println("TEST_ONLY_DELETE_THIS_LINE");
     }
+    
     public MainFrm() {
         initComponents();
         lbl_stat.setText("Disconnected"); //INIT
@@ -187,23 +189,22 @@ public class MainFrm extends javax.swing.JFrame {
             port = Integer.parseInt(txt_port.getText()); //Get da port value (PARSED)
             ip = txt_ip.getText(); //Get IP Value
             
-            if(butt_grup.getSelection().getActionCommand() == "Server" && txt_port.getText() != "")
-            {
-                if(txt_port.getText().equals("")){
-                    port = 8000;
+            if(butt_grup.getSelection().getActionCommand() == "Server"){ //Check if RadioButton is selected Server
+                if(txt_port.getText().isEmpty()){ //check if port text box is empty
+                    port = 8000; //set port to default 8000
                 }
                 svr = new ServerSocket(port);
                 svr.accept();
-            }else if(butt_grup.getSelection().getActionCommand() == "Client" && txt_ip.getText() == "" && txt_port.getText() == ""){
-                if(txt_port.getText().equals("")){
+            }else if(butt_grup.getSelection().getActionCommand() == "Client"){ //Check if RadioButton is selected Client
+                if(txt_port.getText().isEmpty()){
                     port = 8000;
                 }
-                if(txt_ip.getText().equals("")){
-                    ip = "localhost";
+                if(txt_ip.getText().isEmpty()){ //check if IP is empty
+                    ip = "localhost"; //set to localhost
                 }
                 socket = new Socket(ip,port);
             }else{
-                lbl_stat.setText("Missing IP/Port value");
+                lbl_stat.setText("Wrong IP/Port Value");
                 lbl_stat.setForeground(Color.RED);
             }
             
@@ -217,7 +218,7 @@ public class MainFrm extends javax.swing.JFrame {
             butt_dc.setEnabled(true);
             butt_connect.setEnabled(false);
         }catch(IOException e){
-            lbl_stat.setText("Error to connect");
+            lbl_stat.setText("Error to connect w/ error" + e.toString());
             lbl_stat.setForeground(Color.RED);
         }
     }//GEN-LAST:event_butt_connectMouseClicked
@@ -236,12 +237,16 @@ public class MainFrm extends javax.swing.JFrame {
             lbl_stat.setText("Disconnected");
             lbl_stat.setForeground(Color.RED);
         }catch(IOException e){
-            lbl_stat.setText("Error to disconnect");
+            lbl_stat.setText("Error to disconnect w/ error" + e.toString());
         }
     }//GEN-LAST:event_butt_dcMouseClicked
 
     private void butt_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_sendMouseClicked
-       
+       try{
+           
+       }catch(Exception e){
+           lbl_stat.setText("Error to send data w/ error" + e.toString());
+       }
     }//GEN-LAST:event_butt_sendMouseClicked
 
     public static void main(String args[]) {
