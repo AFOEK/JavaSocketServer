@@ -20,8 +20,6 @@ public class MainFrm extends javax.swing.JFrame {
     private PrintWriter out;
     private BufferedReader in;
     ButtonGroup butt_grup;
-    private static StringBuffer toSend;
-    private static StringBuffer toAppend;
     private String msg, s, END_CHAT_SESSION;
     
     public void print(){
@@ -42,8 +40,6 @@ public class MainFrm extends javax.swing.JFrame {
         butt_dc.setEnabled(false);
         rad_server.setSelected(true);
         rad_client.setSelected(false);
-        toSend = new StringBuffer("");
-        toAppend = new StringBuffer("");
         END_CHAT_SESSION = String.valueOf(0);
         s = null;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
