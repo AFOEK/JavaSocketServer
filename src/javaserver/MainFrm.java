@@ -45,6 +45,7 @@ public class MainFrm extends javax.swing.JFrame {
         toSend = new StringBuffer("");
         toAppend = new StringBuffer("");
         END_CHAT_SESSION = String.valueOf(0);
+        s = null;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -206,7 +207,29 @@ public class MainFrm extends javax.swing.JFrame {
                         s = in.readLine();
                         if(s.isBlank()){
                             if(s.equals(END_CHAT_SESSION)){
-                                butt_dcMouseClicked(evt);
+                                try{
+                                    in.close();
+                                    out.close();
+                                    txt_msg.setText("");
+                                    txtmulti_out.setText("");
+                                    txt_msg.setEnabled(false);
+                                    txtmulti_out.setEnabled(false);
+                                    butt_send.setEnabled(false);
+                                    butt_dc.setEnabled(false);
+                                    butt_connect.setEnabled(true);
+                                    in = null;
+                                    out = null;
+                                    socket = null;
+                                    svr = null;
+                                    s = null;
+                                    lbl_stat.setText("Disconnected");
+                                    lbl_stat.setForeground(Color.RED);
+                                }catch(Exception e){
+                                    lbl_stat.setText("Error to disconnect w/ error" + e.toString());
+                                    lbl_stat.setForeground(Color.RED);
+                                }
+                            }else{
+                                txtmulti_out.append(s);
                             }
                         }
                     }catch(IOException ex){
@@ -222,6 +245,41 @@ public class MainFrm extends javax.swing.JFrame {
                     ip = "localhost"; //set to localhost
                 }
                 socket = new Socket(ip,port);
+                if(in.ready()){
+                    try{
+                        s = in.readLine();
+                        if(s.isBlank()){
+                            if(s.equals(END_CHAT_SESSION)){
+                                try{
+                                    in.close();
+                                    out.close();
+                                    txt_msg.setText("");
+                                    txtmulti_out.setText("");
+                                    txt_msg.setEnabled(false);
+                                    txtmulti_out.setEnabled(false);
+                                    butt_send.setEnabled(false);
+                                    butt_dc.setEnabled(false);
+                                    butt_connect.setEnabled(true);
+                                    in = null;
+                                    out = null;
+                                    socket = null;
+                                    svr = null;
+                                    s = null;
+                                    lbl_stat.setText("Disconnected");
+                                    lbl_stat.setForeground(Color.RED);
+                                }catch(Exception e){
+                                    lbl_stat.setText("Error to disconnect w/ error" + e.toString());
+                                    lbl_stat.setForeground(Color.RED);
+                                }
+                            }else{
+                                txtmulti_out.append(s);
+                            }
+                        }
+                    }catch(IOException ex){
+                        lbl_stat.setText("Can't retrive data w/ error" + ex);
+                        lbl_stat.setForeground(Color.RED);
+                    }
+                }
             }else{
                 lbl_stat.setText("Wrong IP/Port Value");
                 lbl_stat.setForeground(Color.RED);
@@ -262,6 +320,7 @@ public class MainFrm extends javax.swing.JFrame {
             lbl_stat.setForeground(Color.RED);
         }catch(IOException e){
             lbl_stat.setText("Error to disconnect w/ error" + e.toString());
+            lbl_stat.setForeground(Color.RED);
         }
     }//GEN-LAST:event_butt_dcMouseClicked
 
@@ -275,6 +334,7 @@ public class MainFrm extends javax.swing.JFrame {
                msg = "";
            }else{
                JOptionPane.showMessageDialog(this, "Message empty", "Error", JOptionPane.ERROR_MESSAGE);
+               txt_msg.grabFocus();
            }
        }catch(Exception e){
            lbl_stat.setText("Error to send data w/ error" + e.toString());
