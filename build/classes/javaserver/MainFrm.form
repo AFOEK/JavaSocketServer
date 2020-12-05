@@ -134,7 +134,7 @@
     <Component class="javax.swing.JButton" name="butt_connect">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="/home/afoek/Documents/Java/JavaServer/Assets/icons8-connected-48.png"/>
+          <Image iconType="3" name="/javaserver/icons8-connected-48.png"/>
         </Property>
         <Property name="name" type="java.lang.String" value="butt_connect" noResource="true"/>
       </Properties>
@@ -145,7 +145,7 @@
     <Component class="javax.swing.JButton" name="butt_dc">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="/home/afoek/Documents/Java/JavaServer/Assets/icons8-disconnected-48.png"/>
+          <Image iconType="3" name="/javaserver/icons8-disconnected-48.png"/>
         </Property>
         <Property name="name" type="java.lang.String" value="butt_dc" noResource="true"/>
       </Properties>

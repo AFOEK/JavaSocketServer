@@ -79,7 +79,7 @@ public class MainFrm extends javax.swing.JFrame {
         txt_port.setAutoscrolls(false);
         txt_port.setName("txt_port"); // NOI18N
 
-        butt_connect.setIcon(new javax.swing.ImageIcon("/home/afoek/Documents/Java/JavaServer/Assets/icons8-connected-48.png")); // NOI18N
+        butt_connect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaserver/icons8-connected-48.png"))); // NOI18N
         butt_connect.setName("butt_connect"); // NOI18N
         butt_connect.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -87,7 +87,7 @@ public class MainFrm extends javax.swing.JFrame {
             }
         });
 
-        butt_dc.setIcon(new javax.swing.ImageIcon("/home/afoek/Documents/Java/JavaServer/Assets/icons8-disconnected-48.png")); // NOI18N
+        butt_dc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaserver/icons8-disconnected-48.png"))); // NOI18N
         butt_dc.setName("butt_dc"); // NOI18N
         butt_dc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
