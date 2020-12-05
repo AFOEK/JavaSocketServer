@@ -2,11 +2,10 @@ package javaserver;
 
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.net.Socket;
 import java.io.IOException;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
@@ -17,10 +16,10 @@ public class MainFrm extends javax.swing.JFrame {
     private String ip;
     private ServerSocket svr;
     private Socket socket;
-    private PrintWriter out;
-    private BufferedReader in;
+    private DataOutputStream out;
+    private DataInputStream in;
     ButtonGroup butt_grup;
-    private String msg, s, END_CHAT_SESSION;
+    private String msg;
     
     public void print(){
         System.out.println("TEST_ONLY_DELETE_THIS_LINE");
@@ -40,8 +39,6 @@ public class MainFrm extends javax.swing.JFrame {
         butt_dc.setEnabled(false);
         rad_server.setSelected(true);
         rad_client.setSelected(false);
-        END_CHAT_SESSION = String.valueOf(0);
-        s = null;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -198,41 +195,6 @@ public class MainFrm extends javax.swing.JFrame {
                 }
                 svr = new ServerSocket(port);
                 svr.accept();
-                if(in.ready()){
-                    try{
-                        s = in.readLine();
-                        if(s.isBlank()){
-                            if(s.equals(END_CHAT_SESSION)){
-                                try{
-                                    in.close();
-                                    out.close();
-                                    txt_msg.setText("");
-                                    txtmulti_out.setText("");
-                                    txt_msg.setEnabled(false);
-                                    txtmulti_out.setEnabled(false);
-                                    butt_send.setEnabled(false);
-                                    butt_dc.setEnabled(false);
-                                    butt_connect.setEnabled(true);
-                                    in = null;
-                                    out = null;
-                                    socket = null;
-                                    svr = null;
-                                    s = null;
-                                    lbl_stat.setText("Disconnected");
-                                    lbl_stat.setForeground(Color.RED);
-                                }catch(Exception e){
-                                    lbl_stat.setText("Error to disconnect w/ error" + e.toString());
-                                    lbl_stat.setForeground(Color.RED);
-                                }
-                            }else{
-                                txtmulti_out.append(s);
-                            }
-                        }
-                    }catch(IOException ex){
-                        lbl_stat.setText("Can't retrive data w/ error" + ex);
-                        lbl_stat.setForeground(Color.RED);
-                    }
-                }
             }else if(butt_grup.getSelection().getActionCommand() == "Client"){ //Check if RadioButton is selected Client
                 if(txt_port.getText().isBlank()){
                     port = 8000;
@@ -241,48 +203,13 @@ public class MainFrm extends javax.swing.JFrame {
                     ip = "localhost"; //set to localhost
                 }
                 socket = new Socket(ip,port);
-                if(in.ready()){
-                    try{
-                        s = in.readLine();
-                        if(s.isBlank()){
-                            if(s.equals(END_CHAT_SESSION)){
-                                try{
-                                    in.close();
-                                    out.close();
-                                    txt_msg.setText("");
-                                    txtmulti_out.setText("");
-                                    txt_msg.setEnabled(false);
-                                    txtmulti_out.setEnabled(false);
-                                    butt_send.setEnabled(false);
-                                    butt_dc.setEnabled(false);
-                                    butt_connect.setEnabled(true);
-                                    in = null;
-                                    out = null;
-                                    socket = null;
-                                    svr = null;
-                                    s = null;
-                                    lbl_stat.setText("Disconnected");
-                                    lbl_stat.setForeground(Color.RED);
-                                }catch(Exception e){
-                                    lbl_stat.setText("Error to disconnect w/ error" + e.toString());
-                                    lbl_stat.setForeground(Color.RED);
-                                }
-                            }else{
-                                txtmulti_out.append(s);
-                            }
-                        }
-                    }catch(IOException ex){
-                        lbl_stat.setText("Can't retrive data w/ error" + ex);
-                        lbl_stat.setForeground(Color.RED);
-                    }
-                }
             }else{
                 lbl_stat.setText("Wrong IP/Port Value");
                 lbl_stat.setForeground(Color.RED);
             }
             
-            out = new PrintWriter(socket.getOutputStream(),true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
             lbl_stat.setText("Connected");
             lbl_stat.setForeground(Color.GREEN);
             txt_msg.setEnabled(true);
@@ -312,6 +239,7 @@ public class MainFrm extends javax.swing.JFrame {
             out = null;
             socket = null;
             svr = null;
+            msg = null;
             lbl_stat.setText("Disconnected");
             lbl_stat.setForeground(Color.RED);
         }catch(IOException e){
@@ -322,10 +250,9 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void butt_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_sendMouseClicked
        try{
-           if(butt_grup.getSelection().getActionCommand() == "Client" && txt_msg.getText() != ""){
+           if(!txt_msg.getText().isBlank()){
                msg = txt_msg.getText();
-               out.print(msg);
-               out.flush();
+               out.writeBytes(msg);
                txt_msg.setText("");
                msg = "";
            }else{
