@@ -332,7 +332,7 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JRadioButton rad_client;
     private javax.swing.JRadioButton rad_server;
     private javax.swing.JTextField txt_ip;
-    private static javax.swing.JTextField txt_msg;
+    private javax.swing.JTextField txt_msg;
     private javax.swing.JTextField txt_port;
     private javax.swing.JTextArea txtmulti_out;
     // End of variables declaration//GEN-END:variables
