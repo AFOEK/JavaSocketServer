@@ -195,6 +195,8 @@ public class MainFrm extends javax.swing.JFrame {
                 }
                 svr = new ServerSocket(port);
                 svr.accept();
+                msg = in.readUTF();
+                txtmulti_out.append(msg + "\n");
             }else if(butt_grup.getSelection().getActionCommand() == "Client"){ //Check if RadioButton is selected Client
                 if(txt_port.getText().isBlank()){
                     port = 8000;
@@ -253,6 +255,7 @@ public class MainFrm extends javax.swing.JFrame {
            if(!txt_msg.getText().isBlank()){
                msg = txt_msg.getText();
                out.writeBytes(msg);
+               out.flush();
                txt_msg.setText("");
                msg = "";
            }else{
