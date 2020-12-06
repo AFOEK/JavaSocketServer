@@ -6,6 +6,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
@@ -13,18 +15,36 @@ import javax.swing.JOptionPane;
 public class MainFrm extends javax.swing.JFrame {
 
     private int port;
-    private String ip;
+    private String ip, msg, s;
     private ServerSocket svr;
     private Socket socket;
-    private DataOutputStream out;
-    private DataInputStream in;
+    private PrintWriter out;
+    private BufferedReader in;
     ButtonGroup butt_grup;
-    private String msg;
     
     public void print(){
         System.out.println("TEST_ONLY_DELETE_THIS_LINE");
     }
-    
+    public Thread timer = new Thread(new Runnable(){
+        @Override
+        public void run(){
+            while(!Thread.interrupted()){
+                try{
+                    Thread.sleep(20, 0);
+                    if(!msg.isBlank() && butt_grup.getSelection().getActionCommand().equals("Client")){
+                       txtmulti_out.append("Client: "+ msg + "\n");
+                       msg = null;
+                    }else{
+                       txtmulti_out.append("Server: "+ msg + "\n");
+                       msg = null; 
+                    }
+                }catch(InterruptedException ie){
+                    lbl_stat.setText("Thread error w/" + ie);
+                    lbl_stat.setForeground(Color.RED);
+                }
+            }
+        }
+    });
     public MainFrm() {
         initComponents();
         lbl_stat.setText("Disconnected"); //INIT
@@ -39,6 +59,12 @@ public class MainFrm extends javax.swing.JFrame {
         butt_dc.setEnabled(false);
         rad_server.setSelected(true);
         rad_client.setSelected(false);
+        try{
+            out = new PrintWriter(socket.getOutputStream(),true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        }catch(Exception e){
+            
+        }
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -195,8 +221,9 @@ public class MainFrm extends javax.swing.JFrame {
                 }
                 svr = new ServerSocket(port);
                 svr.accept();
-                msg = in.readUTF();
-                txtmulti_out.append(msg + "\n");
+                while(!(s = in.readLine()).isBlank()){
+                    timer.start();
+                }
             }else if(butt_grup.getSelection().getActionCommand() == "Client"){ //Check if RadioButton is selected Client
                 if(txt_port.getText().isBlank()){
                     port = 8000;
@@ -210,8 +237,6 @@ public class MainFrm extends javax.swing.JFrame {
                 lbl_stat.setForeground(Color.RED);
             }
             
-            out = new DataOutputStream(socket.getOutputStream());
-            in = new DataInputStream(socket.getInputStream());
             lbl_stat.setText("Connected");
             lbl_stat.setForeground(Color.GREEN);
             txt_msg.setEnabled(true);
@@ -254,8 +279,7 @@ public class MainFrm extends javax.swing.JFrame {
        try{
            if(!txt_msg.getText().isBlank()){
                msg = txt_msg.getText();
-               out.writeBytes(msg);
-               out.flush();
+               
                txt_msg.setText("");
                msg = "";
            }else{
@@ -308,7 +332,7 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JRadioButton rad_client;
     private javax.swing.JRadioButton rad_server;
     private javax.swing.JTextField txt_ip;
-    private javax.swing.JTextField txt_msg;
+    private static javax.swing.JTextField txt_msg;
     private javax.swing.JTextField txt_port;
     private javax.swing.JTextArea txtmulti_out;
     // End of variables declaration//GEN-END:variables
