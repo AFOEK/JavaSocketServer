@@ -62,12 +62,6 @@ public class MainFrm extends javax.swing.JFrame {
         butt_dc.setEnabled(false);
         rad_server.setSelected(true);
         rad_client.setSelected(false);
-        try{
-            out = new PrintWriter(socket.getOutputStream(),true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }catch(Exception e){
-            
-        }
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -224,6 +218,8 @@ public class MainFrm extends javax.swing.JFrame {
                 }
                 svr = new ServerSocket(port);
                 socket = svr.accept();
+                out = new PrintWriter(socket.getOutputStream(),true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 while(!(s = in.readLine()).isBlank()){
                     timer.start();
                 }
@@ -240,6 +236,8 @@ public class MainFrm extends javax.swing.JFrame {
                     ip = "localhost"; //set to localhost
                 }
                 socket = new Socket(ip,port);
+                out = new PrintWriter(socket.getOutputStream(),true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 while(!(s = in.readLine()).isBlank()){
                     timer.start();
                 }
