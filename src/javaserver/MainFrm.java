@@ -21,49 +21,48 @@ public class MainFrm extends javax.swing.JFrame {
     private PrintWriter out;
     private BufferedReader in;
     ButtonGroup butt_grup;
-    
-    public void print(){
+
+    public void print() {
         System.out.println("TEST_ONLY_DELETE_THIS_LINE");
     }
-    public Thread timer = new Thread(new Runnable(){
+    private Thread timer = new Thread(new Runnable() {
         @Override
-        public void run(){
-            while(!Thread.interrupted()){
-                try{
+        public void run() {
+            while (!Thread.interrupted()) {
+                try {
                     Thread.sleep(20);
                     s = in.readLine();
-                    if(!s.isBlank() && butt_grup.getSelection().getActionCommand().equals("Client")){
-                        while(true){
-                            if(!s.isBlank())
-                            {
-                                txtmulti_out.append("Client: "+ s + "\n");
-                                txtmulti_out.append("-----------------------------------" + "\n");    
-                            }else{
+                    if (!s.isBlank() && butt_grup.getSelection().getActionCommand().equals("Client")) {
+                        while (true) {
+                            if (!s.isBlank()) {
+                                txtmulti_out.append("Client: " + s + "\n");
+                                txtmulti_out.append("-----------------------------------" + "\n");
+                            } else {
                                 break;
                             }
-                        }       
+                        }
                     }
-                    if(!s.isBlank() && butt_grup.getSelection().getActionCommand().equals("Server")){
-                       while(true){
-                            if(!s.isBlank())
-                            {
-                                txtmulti_out.append("Server "+ s + "\n");
-                                txtmulti_out.append("-----------------------------------" + "\n");    
-                            }else{
+                    if (!s.isBlank() && butt_grup.getSelection().getActionCommand().equals("Server")) {
+                        while (true) {
+                            if (!s.isBlank()) {
+                                txtmulti_out.append("Server " + s + "\n");
+                                txtmulti_out.append("-----------------------------------" + "\n");
+                            } else {
                                 break;
                             }
-                        }       
+                        }
                     }
-                }catch(InterruptedException ie){
+                } catch (InterruptedException ie) {
                     lbl_stat.setText("Thread error w/" + ie);
                     lbl_stat.setForeground(Color.RED);
-                }catch(IOException ex){
+                } catch (IOException ex) {
                     lbl_stat.setText("Retrive data error w/" + ex);
                     lbl_stat.setForeground(Color.RED);
                 }
             }
         }
     });
+
     public MainFrm() {
         initComponents();
         lbl_stat.setText("Disconnected"); //INIT
@@ -78,7 +77,6 @@ public class MainFrm extends javax.swing.JFrame {
         butt_dc.setEnabled(false);
         rad_server.setSelected(true);
         rad_client.setSelected(false);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +97,7 @@ public class MainFrm extends javax.swing.JFrame {
         rad_server = new javax.swing.JRadioButton();
         rad_client = new javax.swing.JRadioButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         jLabel1.setText("IP:");
@@ -224,12 +222,12 @@ public class MainFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void butt_connectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_connectMouseClicked
-        try{
+        try {
             port = Integer.parseInt(txt_port.getText()); //Get da port value (PARSED)
             ip = txt_ip.getText(); //Get IP Value
-            
-            if(butt_grup.getSelection().getActionCommand() == "Server"){ //Check if RadioButton is selected Server
-                if(txt_port.getText().isBlank()){ //check if port text box is empty
+
+            if (butt_grup.getSelection().getActionCommand() == "Server") { //Check if RadioButton is selected Server
+                if (txt_port.getText().isBlank()) { //check if port text box is empty
                     port = 8000; //set port to default 8000
                 }
                 txt_msg.setEnabled(true);
@@ -239,26 +237,26 @@ public class MainFrm extends javax.swing.JFrame {
                 butt_connect.setEnabled(true);
                 svr = new ServerSocket(port);
                 svr.accept();
-                out = new PrintWriter(socket.getOutputStream(),true);
+                out = new PrintWriter(socket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 timer.start();
-            }else if(butt_grup.getSelection().getActionCommand() == "Client"){ //Check if RadioButton is selected Client
-                if(txt_port.getText().isBlank()){
+            } else if (butt_grup.getSelection().getActionCommand() == "Client") { //Check if RadioButton is selected Client
+                if (txt_port.getText().isBlank()) {
                     port = 8000;
                 }
-                if(txt_ip.getText().isBlank()){ //check if IP is empty
+                if (txt_ip.getText().isBlank()) { //check if IP is empty
                     ip = "localhost"; //set to localhost
                 }
-                
-                socket = new Socket(ip,port);
-                out = new PrintWriter(socket.getOutputStream(),true);
+
+                socket = new Socket(ip, port);
+                out = new PrintWriter(socket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-       
-            }else{
+
+            } else {
                 lbl_stat.setText("Wrong IP/Port Value");
                 lbl_stat.setForeground(Color.RED);
             }
-            
+
             lbl_stat.setText("Connected");
             lbl_stat.setForeground(Color.GREEN);
             txt_msg.setEnabled(true);
@@ -267,14 +265,14 @@ public class MainFrm extends javax.swing.JFrame {
             butt_dc.setEnabled(true);
             butt_connect.setEnabled(false);
             txt_msg.grabFocus();
-        }catch(IOException e){
+        } catch (IOException e) {
             lbl_stat.setText("Error to connect w/ error" + e.toString());
             lbl_stat.setForeground(Color.RED);
         }
     }//GEN-LAST:event_butt_connectMouseClicked
 
     private void butt_dcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_dcMouseClicked
-        try{
+        try {
             in.close();
             out.close();
             svr.close();
@@ -293,25 +291,25 @@ public class MainFrm extends javax.swing.JFrame {
             msg = null;
             lbl_stat.setText("Disconnected");
             lbl_stat.setForeground(Color.RED);
-        }catch(IOException e){
+        } catch (IOException e) {
             lbl_stat.setText("Error to disconnect w/ error" + e.toString());
             lbl_stat.setForeground(Color.RED);
         }
     }//GEN-LAST:event_butt_dcMouseClicked
 
     private void butt_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_sendMouseClicked
-       try{
-           msg = txt_msg.getText();
-            if(!msg.isBlank()){
+        try {
+            msg = txt_msg.getText();
+            if (!msg.isBlank()) {
                 out.print(msg);
                 out.flush();
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Message empty", "Error", JOptionPane.ERROR_MESSAGE);
                 txt_msg.grabFocus();
-            }           
-       }catch(Exception e){
-           lbl_stat.setText("Error to send data w/ error" + e.toString());
-       }
+            }
+        } catch (Exception e) {
+            lbl_stat.setText("Error to send data w/ error" + e.toString());
+        }
     }//GEN-LAST:event_butt_sendMouseClicked
 
     public static void main(String args[]) {
@@ -340,7 +338,7 @@ public class MainFrm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainFrm().setVisible(true);
-                
+
             }
         });
     }
