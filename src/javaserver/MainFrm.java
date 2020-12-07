@@ -31,18 +31,34 @@ public class MainFrm extends javax.swing.JFrame {
             while(!Thread.interrupted()){
                 try{
                     Thread.sleep(20);
-                    if(!msg.isBlank() && butt_grup.getSelection().getActionCommand().equals("Client")){
-                       txtmulti_out.append("Client: "+ msg + "\n");
-                       txtmulti_out.append("-----------------------------------" + "\n");
-                       msg = null;
+                    s = in.readLine();
+                    if(!s.isBlank() && butt_grup.getSelection().getActionCommand().equals("Client")){
+                        while(true){
+                            if(!s.isBlank())
+                            {
+                                txtmulti_out.append("Client: "+ s + "\n");
+                                txtmulti_out.append("-----------------------------------" + "\n");    
+                            }else{
+                                break;
+                            }
+                        }       
                     }
-                    if(!msg.isBlank() && butt_grup.getSelection().getActionCommand().equals("Client")){
-                       txtmulti_out.append("Server: "+ msg + "\n");
-                       txtmulti_out.append("-----------------------------------" + "\n");
-                       msg = null; 
+                    if(!s.isBlank() && butt_grup.getSelection().getActionCommand().equals("Server")){
+                       while(true){
+                            if(!s.isBlank())
+                            {
+                                txtmulti_out.append("Server "+ s + "\n");
+                                txtmulti_out.append("-----------------------------------" + "\n");    
+                            }else{
+                                break;
+                            }
+                        }       
                     }
                 }catch(InterruptedException ie){
                     lbl_stat.setText("Thread error w/" + ie);
+                    lbl_stat.setForeground(Color.RED);
+                }catch(IOException ex){
+                    lbl_stat.setText("Retrive data error w/" + ex);
                     lbl_stat.setForeground(Color.RED);
                 }
             }
@@ -216,18 +232,16 @@ public class MainFrm extends javax.swing.JFrame {
                 if(txt_port.getText().isBlank()){ //check if port text box is empty
                     port = 8000; //set port to default 8000
                 }
-                svr = new ServerSocket(port);
-                socket = svr.accept();
-                out = new PrintWriter(socket.getOutputStream(),true);
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                while(!(s = in.readLine()).isBlank()){
-                    timer.start();
-                }
                 txt_msg.setEnabled(true);
                 txtmulti_out.setEnabled(true);
                 butt_send.setEnabled(true);
                 butt_dc.setEnabled(false);
                 butt_connect.setEnabled(true);
+                svr = new ServerSocket(port);
+                svr.accept();
+                out = new PrintWriter(socket.getOutputStream(),true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                timer.start();
             }else if(butt_grup.getSelection().getActionCommand() == "Client"){ //Check if RadioButton is selected Client
                 if(txt_port.getText().isBlank()){
                     port = 8000;
@@ -235,12 +249,11 @@ public class MainFrm extends javax.swing.JFrame {
                 if(txt_ip.getText().isBlank()){ //check if IP is empty
                     ip = "localhost"; //set to localhost
                 }
+                
                 socket = new Socket(ip,port);
                 out = new PrintWriter(socket.getOutputStream(),true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                while(!(s = in.readLine()).isBlank()){
-                    timer.start();
-                }
+       
             }else{
                 lbl_stat.setText("Wrong IP/Port Value");
                 lbl_stat.setForeground(Color.RED);
@@ -288,14 +301,13 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void butt_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_sendMouseClicked
        try{
-            if(!txt_msg.getText().isBlank()){
-            msg = txt_msg.getText();
-            while(!msg.isBlank()){
-                out.append(msg);
-            }
+           msg = txt_msg.getText();
+            if(!msg.isBlank()){
+                out.print(msg);
+                out.flush();
             }else{
-            JOptionPane.showMessageDialog(this, "Message empty", "Error", JOptionPane.ERROR_MESSAGE);
-            txt_msg.grabFocus();
+                JOptionPane.showMessageDialog(this, "Message empty", "Error", JOptionPane.ERROR_MESSAGE);
+                txt_msg.grabFocus();
             }           
        }catch(Exception e){
            lbl_stat.setText("Error to send data w/ error" + e.toString());
@@ -328,6 +340,7 @@ public class MainFrm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainFrm().setVisible(true);
+                
             }
         });
     }
