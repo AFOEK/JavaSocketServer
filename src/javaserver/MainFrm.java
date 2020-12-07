@@ -2,8 +2,6 @@ package javaserver;
 
 import java.awt.Color;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.net.Socket;
 import java.io.IOException;
 import java.io.InputStreamReader;
