@@ -23,17 +23,23 @@ public class MainFrm extends javax.swing.JFrame {
     public void print() {
         System.out.println("TEST_ONLY_DELETE_THIS_LINE");
     }
+    
     private Thread timer = new Thread(new Runnable() {
         @Override
         public void run() {
             while (!Thread.interrupted()) {
                 try {
                     Thread.sleep(20);
-                    s = in.readLine();
+                    try{
+                        s = in.readLine();
+                    }catch(IOException ex){
+                        lbl_stat.setText("Retrive data error w/" + ex);
+                        lbl_stat.setForeground(Color.RED);
+                    }
                     if (!s.isBlank() && butt_grup.getSelection().getActionCommand().equals("Client")) {
                         while (true) {
                             if (!s.isBlank()) {
-                                txtmulti_out.append("Client: " + s + "\n");
+                                txtmulti_out.append("Server: " + s + "\n");
                                 txtmulti_out.append("-----------------------------------" + "\n");
                             } else {
                                 break;
@@ -43,7 +49,7 @@ public class MainFrm extends javax.swing.JFrame {
                     if (!s.isBlank() && butt_grup.getSelection().getActionCommand().equals("Server")) {
                         while (true) {
                             if (!s.isBlank()) {
-                                txtmulti_out.append("Server " + s + "\n");
+                                txtmulti_out.append("Client: " + s + "\n");
                                 txtmulti_out.append("-----------------------------------" + "\n");
                             } else {
                                 break;
@@ -52,9 +58,6 @@ public class MainFrm extends javax.swing.JFrame {
                     }
                 } catch (InterruptedException ie) {
                     lbl_stat.setText("Thread error w/" + ie);
-                    lbl_stat.setForeground(Color.RED);
-                } catch (IOException ex) {
-                    lbl_stat.setText("Retrive data error w/" + ex);
                     lbl_stat.setForeground(Color.RED);
                 }
             }
@@ -186,7 +189,7 @@ public class MainFrm extends javax.swing.JFrame {
                                     .addComponent(butt_connect, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)))
                             .addComponent(butt_dc, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(lbl_stat, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_stat, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -270,6 +273,7 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_butt_connectMouseClicked
 
     private void butt_dcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_dcMouseClicked
+        timer.interrupt();
         try {
             in.close();
             out.close();
@@ -298,9 +302,10 @@ public class MainFrm extends javax.swing.JFrame {
     private void butt_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_sendMouseClicked
         try {
             msg = txt_msg.getText();
-            if (!msg.isBlank()) {
-                out.print(msg);
+            if (msg != null) {
+                out.write(msg);
                 out.flush();
+                txt_msg.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "Message empty", "Error", JOptionPane.ERROR_MESSAGE);
                 txt_msg.grabFocus();
