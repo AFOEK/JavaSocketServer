@@ -19,7 +19,7 @@ public class MainFrm extends javax.swing.JFrame {
     private PrintWriter out;
     private BufferedReader in;
     ButtonGroup butt_grup;
-
+    
     public void print() {
         System.out.println("TEST_ONLY_DELETE_THIS_LINE");
     }
@@ -63,7 +63,7 @@ public class MainFrm extends javax.swing.JFrame {
             }
         }
     });
-
+    
     public MainFrm() {
         initComponents();
         lbl_stat.setText("Disconnected"); //INIT
@@ -116,17 +116,17 @@ public class MainFrm extends javax.swing.JFrame {
 
         butt_connect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaserver/icons8-connected-48.png"))); // NOI18N
         butt_connect.setName("butt_connect"); // NOI18N
-        butt_connect.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                butt_connectMouseClicked(evt);
+        butt_connect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butt_connectActionPerformed(evt);
             }
         });
 
         butt_dc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaserver/icons8-disconnected-48.png"))); // NOI18N
         butt_dc.setName("butt_dc"); // NOI18N
-        butt_dc.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                butt_dcMouseClicked(evt);
+        butt_dc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butt_dcActionPerformed(evt);
             }
         });
 
@@ -143,9 +143,9 @@ public class MainFrm extends javax.swing.JFrame {
 
         butt_send.setText("Send");
         butt_send.setName("butt_send"); // NOI18N
-        butt_send.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                butt_sendMouseClicked(evt);
+        butt_send.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butt_sendActionPerformed(evt);
             }
         });
 
@@ -163,33 +163,32 @@ public class MainFrm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(txt_msg, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(butt_send, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(rad_server, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(rad_client, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(79, 79, 79))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txt_ip, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(39, 39, 39)
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(butt_connect, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)))
-                            .addComponent(butt_dc, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(lbl_stat, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txt_msg, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(butt_send, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(rad_server, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rad_client, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(79, 79, 79))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_ip, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(butt_connect, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
+                        .addComponent(butt_dc, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_stat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -222,7 +221,50 @@ public class MainFrm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void butt_connectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_connectMouseClicked
+    private void butt_sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butt_sendActionPerformed
+        try {
+            msg = txt_msg.getText();
+            if (msg != null) {
+                out.write(msg);
+                out.flush();
+                txt_msg.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Message empty", "Error", JOptionPane.ERROR_MESSAGE);
+                txt_msg.grabFocus();
+            }
+        } catch (Exception e) {
+            lbl_stat.setText("Error to send data w/ error" + e.toString());
+        }
+    }//GEN-LAST:event_butt_sendActionPerformed
+
+    private void butt_dcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butt_dcActionPerformed
+        timer.interrupt();
+        try {
+            in.close();
+            out.close();
+            svr.close();
+            socket.close();
+            txt_msg.setText("");
+            txtmulti_out.setText("");
+            txt_msg.setEnabled(false);
+            txtmulti_out.setEnabled(false);
+            butt_send.setEnabled(false);
+            butt_dc.setEnabled(false);
+            butt_connect.setEnabled(true);
+            in = null;
+            out = null;
+            socket = null;
+            svr = null;
+            msg = null;
+            lbl_stat.setText("Disconnected");
+            lbl_stat.setForeground(Color.RED);
+        } catch (IOException e) {
+            lbl_stat.setText("Error to disconnect w/ error" + e.toString());
+            lbl_stat.setForeground(Color.RED);
+        }
+    }//GEN-LAST:event_butt_dcActionPerformed
+
+    private void butt_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butt_connectActionPerformed
         try {
             port = Integer.parseInt(txt_port.getText()); //Get da port value (PARSED)
             ip = txt_ip.getText(); //Get IP Value
@@ -270,50 +312,7 @@ public class MainFrm extends javax.swing.JFrame {
             lbl_stat.setText("Error to connect w/ error" + e.toString());
             lbl_stat.setForeground(Color.RED);
         }
-    }//GEN-LAST:event_butt_connectMouseClicked
-
-    private void butt_dcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_dcMouseClicked
-        timer.interrupt();
-        try {
-            in.close();
-            out.close();
-            svr.close();
-            socket.close();
-            txt_msg.setText("");
-            txtmulti_out.setText("");
-            txt_msg.setEnabled(false);
-            txtmulti_out.setEnabled(false);
-            butt_send.setEnabled(false);
-            butt_dc.setEnabled(false);
-            butt_connect.setEnabled(true);
-            in = null;
-            out = null;
-            socket = null;
-            svr = null;
-            msg = null;
-            lbl_stat.setText("Disconnected");
-            lbl_stat.setForeground(Color.RED);
-        } catch (IOException e) {
-            lbl_stat.setText("Error to disconnect w/ error" + e.toString());
-            lbl_stat.setForeground(Color.RED);
-        }
-    }//GEN-LAST:event_butt_dcMouseClicked
-
-    private void butt_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butt_sendMouseClicked
-        try {
-            msg = txt_msg.getText();
-            if (msg != null) {
-                out.write(msg);
-                out.flush();
-                txt_msg.setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "Message empty", "Error", JOptionPane.ERROR_MESSAGE);
-                txt_msg.grabFocus();
-            }
-        } catch (Exception e) {
-            lbl_stat.setText("Error to send data w/ error" + e.toString());
-        }
-    }//GEN-LAST:event_butt_sendMouseClicked
+    }//GEN-LAST:event_butt_connectActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -347,18 +346,18 @@ public class MainFrm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton butt_connect;
-    private javax.swing.JButton butt_dc;
-    private javax.swing.JButton butt_send;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbl_stat;
-    private javax.swing.JRadioButton rad_client;
-    private javax.swing.JRadioButton rad_server;
-    private javax.swing.JTextField txt_ip;
-    private javax.swing.JTextField txt_msg;
-    private javax.swing.JTextField txt_port;
+    public javax.swing.JButton butt_connect;
+    public javax.swing.JButton butt_dc;
+    public javax.swing.JButton butt_send;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel2;
+    public javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JLabel lbl_stat;
+    public javax.swing.JRadioButton rad_client;
+    public javax.swing.JRadioButton rad_server;
+    public javax.swing.JTextField txt_ip;
+    public javax.swing.JTextField txt_msg;
+    public javax.swing.JTextField txt_port;
     private javax.swing.JTextArea txtmulti_out;
     // End of variables declaration//GEN-END:variables
 }
